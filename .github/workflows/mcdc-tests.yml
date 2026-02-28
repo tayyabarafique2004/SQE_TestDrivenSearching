@@ -1,35 +1,45 @@
-name: MC/DC Tests
+﻿name: MC/DC Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, main ]    # trigger on both master and main
   pull_request:
-    branches: [ main ]
+    branches: [ master, main ]
 
 jobs:
   build-and-test:
     runs-on: windows-latest
 
     steps:
+    # 1 Checkout your repository
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    # 2️ Setup .NET 8 SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0
 
+    # 3️ Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
 
+    # 4️ Build solution
     - name: Build solution
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run xUnit Tests
-      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+    # 5️ Ensure TestResults folder exists
+    - name: Create TestResults folder
+      run: mkdir -p SearchLibrary.Tests/TestResults
 
+    # 6️ Run xUnit Tests
+    - name: Run xUnit Tests
+      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=SearchLibrary.Tests/TestResults/test_results.trx"
+
+    # 7️ Upload Test Results as artifact
     - name: Upload Test Results
       uses: actions/upload-artifact@v3
       with:
         name: test-results
-        path: SearchLibrary.Tests/TestResults/test_results.trx
+        path: SearchLibrary.Tests/TestResults/
