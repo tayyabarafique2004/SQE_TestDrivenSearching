@@ -35,7 +35,7 @@ jobs:
 
     # 6️ Run xUnit Tests
     - name: Run xUnit Tests
-      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=SearchLibrary.Tests/TestResults/test_results.trx"
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=SearchLibrary.Tests/TestResults/test_results.trx"
 
     # 7️ Upload Test Results as artifact
     - name: Upload Test Results
