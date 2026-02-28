@@ -8,6 +8,7 @@ using SearchLibrary.Models;
 
 namespace SearchLibrary.Algorithms
 {
+    //-------
     public class BinarySearch
     {
         public int Search(int key, Order[] orders)
